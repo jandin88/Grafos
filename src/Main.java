@@ -21,12 +21,13 @@ public class Main {
             if (response.equalsIgnoreCase("l")) {
                 GraphsListAdjacency gl=new GraphsListAdjacency();
                 gl.readGraph("src/util/file/grafosFile", gl);
-                List<Vertex> vertexList=gl.DFS(1678);
+                List<Vertex> vertexList=gl.DFS(1);
 
-                gl.writeInfoGrafo("BFSLista.txt",gl.BFS(1678));
+                gl.writeInfoGrafo("BFSLista.txt",gl.BFS(1));
                 gl.writeInfoGrafo("DFSLIsta.txt",vertexList);
-                System.out.println(gl.distanceBetweenVertices(1678,6007));
-                System.out.println(gl.diameterOfGraph(1678,6007));
+
+                System.out.println(gl.distanceBetweenVertices(150,750));
+                System.out.println(gl.diameterOfGraph(150,750));
 
                 break;
             } else if (response.equalsIgnoreCase("m")) {

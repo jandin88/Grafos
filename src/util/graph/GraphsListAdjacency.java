@@ -20,7 +20,7 @@ public class GraphsListAdjacency extends ReadAndWriteFile implements GraphRepres
     public void quantityVertices(int quantityVertice) {
         this.vertices = quantityVertice;
         adjList=new LinkedList[quantityVertice];
-        for (int i = 0; i < quantityVertice; i++) {
+        for (int i = 0; i <quantityVertice; i++) {
             adjList[i]=new LinkedList<>();
         }
     }
@@ -40,7 +40,7 @@ public class GraphsListAdjacency extends ReadAndWriteFile implements GraphRepres
         while (!queue.isEmpty()) {
             int currentVertex = queue.poll();
             vertexList.add(new Vertex(currentVertex,parent[currentVertex],level[currentVertex]));
-            for (int vertex : adjList[currentVertex]) { // Itera sobre os vizinhos corretamente
+            for (int vertex : adjList[currentVertex]) {
                 if (!visited[vertex]) {
                     visited[vertex] = true;
                     parent[vertex]=currentVertex;
@@ -59,7 +59,6 @@ public class GraphsListAdjacency extends ReadAndWriteFile implements GraphRepres
         int[] level = new int[vertices];
         int[] parent=new int[vertices];
 
-        vertexList.add(new Vertex(startV,-1,0));
         stack.push(startV);
         level[startV] = 0;
         parent[startV]=-1;
@@ -94,7 +93,7 @@ public class GraphsListAdjacency extends ReadAndWriteFile implements GraphRepres
             int currentVertex = queue.poll();
             for (int neighbor : adjList[currentVertex]) {
                 if (!visited[neighbor]) {
-                    visited[neighbor] = true; // Marque como visitado apenas quando o processarmos
+                    visited[neighbor] = true;
                     distance[neighbor] = distance[currentVertex] + 1;
                     queue.add(neighbor);
                 }
@@ -138,7 +137,7 @@ public class GraphsListAdjacency extends ReadAndWriteFile implements GraphRepres
 
     @Override
     public int countVertices() {
-        return vertices;
+        return vertices-1;
     }
 
     @Override
@@ -172,34 +171,34 @@ public class GraphsListAdjacency extends ReadAndWriteFile implements GraphRepres
     public int avgDegree() {
         return (2*countEdge())/vertices;
     }
+
     @Override
     public List<List<Integer>> connectedComponents() {
-        boolean[] visited = new boolean[vertices];
-        List<List<Integer>> connectedComponents = new ArrayList<>();
-        for (int v = 0; v < vertices; v++) {
-            if (!visited[v]) {
-                List<Integer> component = new ArrayList<>();
-                DFS(v, visited, component);
-                connectedComponents.add(component);
-            }
-        }
-        connectedComponents.sort((a, b) -> b.size() - a.size()); // Ordena por tamanho decrescente
-        return connectedComponents;
-    }
 
-    private void DFS(int v, boolean visited[], List<Integer> component) {
-        Stack<Integer> stack = new Stack<>();
-        stack.push(v);
-        visited[v] = true; // Marcamos o vértice atual como visitado ao colocá-lo na pilha
-        while (!stack.isEmpty()) { // Corrigido: verificar se a pilha não está vazia
-            int current = stack.pop();
-            component.add(current);
-            for (Integer neighbor : adjList[current]) {
-                if (!visited[neighbor]) {
-                    visited[neighbor] = true; // Marcamos os vizinhos não visitados antes de adicioná-los à pilha
-                    stack.push(neighbor);
+        boolean[] visited = new boolean[vertices];
+        List<List<Integer>> components = new ArrayList<>();
+
+        for (int i = 0; i < vertices; i++) {
+            if (!visited[i]) {
+                List<Integer> component = new ArrayList<>();
+                Stack<Integer> stack = new Stack<>();
+                stack.push(i);
+                visited[i] = true;
+
+                while (!stack.isEmpty()) {
+                    int vertex = stack.pop();
+                    component.add(vertex);
+                    for (int neighbor : adjList[vertex]) {
+                        if (!visited[neighbor]) {
+                            stack.push(neighbor);
+                            visited[neighbor] = true;
+                        }
+                    }
                 }
+                components.add(component);
             }
         }
+
+        return components;
     }
 }

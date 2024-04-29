@@ -10,7 +10,6 @@ public interface GraphRepresentation {
     int minDegree();
     int maxDegree();
     int avgDegree();
-
     List<List<Integer>> connectedComponents();
 
 }

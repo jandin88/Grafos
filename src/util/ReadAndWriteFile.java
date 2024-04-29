@@ -13,7 +13,7 @@ public class ReadAndWriteFile {
         this.typeGraph=typeGraph;
         try(BufferedReader reader=new BufferedReader(new FileReader(path))){
             String line;
-            typeGraph.quantityVertices(Integer.parseInt(reader.readLine()));
+            typeGraph.quantityVertices(Integer.parseInt(reader.readLine())+1);
             while((line= reader.readLine())!=null){
                 String[] lineArray =line.split(" ");
                 typeGraph.addEdge(Integer.parseInt(lineArray[0]),Integer.parseInt(lineArray[1]));
@@ -35,9 +35,9 @@ public class ReadAndWriteFile {
             writer.write("Número de Componentes Conexas: " + connectedComponents.size() + "\n");
             writer.write("Componentes Conexas:\n");
             for (List<Integer> component : connectedComponents) {
-                writer.write("Tamanho: " + component.size() + ", Vértices: " + component + "\n\n");
+                writer.write("Tamanho: " + component.size() + ", Vértices: " + component + "\n");
             }
-
+            writer.newLine();
 
             for(Vertex v: vertexList){
                 String parent = v.getParent()==-1?"Raiz": String.valueOf(v.getParent());
